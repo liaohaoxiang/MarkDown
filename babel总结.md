@@ -6,7 +6,7 @@
 
 ### 运行原理
 
-![](/Users/diu/Desktop/MarkDownFile/面试题/babel.png)
+![](./babel.png)
 
 - 解析 （Parse）
 
