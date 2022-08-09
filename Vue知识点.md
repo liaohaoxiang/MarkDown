@@ -255,3 +255,20 @@ export function proxy (target: Object, sourceKey: string, key: string) {
 
 - 通过`sharedPropertyDefinition`对象，定义`getter`和`setter` 两个函数，通过`Object.defineProperty`,对传入的vm实例和key，包装一层getter和setter，我们访问 `vm.key`，实质上这里的getter会访问到 `vm._data.key` ，就可以用 `this.mydata`,访问调用到`this._data.mydata`. 这里是代理访问的原理
 
+
+
+
+
+### 事件处理
+
+- 监听事件
+  - 通过 ```v-on``` 指令监听 DOM 事件
+  - 内联处理器中的方法可以通过``` v-on:click="say('hi')"``` 来调用方法
+  - 如果内联语句需要用到 原始的 DOM 事件，可以用特殊变量 ```$event``` 传入到方法 ```v-on:click="fn('123', $event)"```
+- 事件修饰符
+  - `@click.stop` 事件的 `event.stopPropagation()` ，阻止事件的冒泡和捕获两种传播手段
+  - `@click.prevent`  事件listener 的`event.preventDefault()`，阻止事件的默认行为
+  - `@click.capture` 事件listener 使用事件捕获模式
+  - `@click.self` 只当`event.target`是当前元素自身时才触发 handler
+  - `@click.once` 事件只触发一次
+  - `@click.passive` 阻止事件 listener 使用 preventDefault 方法，告诉浏览器你不想阻止默认行为
