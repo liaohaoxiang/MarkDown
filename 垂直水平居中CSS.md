@@ -29,11 +29,10 @@
        .children {
          background-color: orangered;
        }
-       
        ```
-
+     
    - **`grid`**
-
+   
      - ```css
        .container {
          display: grid;
@@ -45,7 +44,7 @@
           background-color: orangered;
        }
        ```
-
+   
      - ```css
        .container {
          display: grid;
@@ -55,16 +54,16 @@
          margin: auto;
        }
        ```
-
+   
      - ```css
        .children {
          justify-self: center; /* 水平居中 */
          align-self: center; /* 垂直居中 */
        }
        ```
-
+   
      - 
-
+   
 2. 知道子元素大小
 
    - **`absolute`  + `margin负值`**

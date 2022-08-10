@@ -272,3 +272,6 @@ export function proxy (target: Object, sourceKey: string, key: string) {
   - `@click.self` 只当`event.target`是当前元素自身时才触发 handler
   - `@click.once` 事件只触发一次
   - `@click.passive` 阻止事件 listener 使用 preventDefault 方法，告诉浏览器你不想阻止默认行为
+- 按键修饰符
+  - 监听键盘事件，检查详细的按键
+  - `@keyup.enter` 当 handler 里的`$event.key` 为`Enter` 时才触发
