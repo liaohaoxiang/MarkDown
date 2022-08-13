@@ -268,9 +268,17 @@
 
 开启需要
 
-1. 使用`ES6规范`的import/export
-2. webpack5中，开启`optimization.minimize` 和`optimization.minimize.minimizer = [new TerserWebpackPlugin()]` 
-3. 在`package.json`中配置`sideEffects = false`
+1. 使用`ES6规范`的import/export, 引用的第三方库也需要是 es 模块
+3. 在`package.json`中配置`sideEffects = false`。为了避免有些副作用代码，而导致生产环境代码被误删除，所以有了这个配置
 4. 注意`babel` 是否开启了配置 `modules` ，转变成其他规范
+4. development 模式下中，需要开启`optimization.minimize` 和`optimization.minimize.minimizer = [new TerserWebpackPlugin()]`。product模式下默认启动
+
+1. lodash
+类似 import { throttle } from 'lodash' 就属于有副作用的引用，会将整个 lodash 文件进行打包。
+优化方式是使用 import { throttle } from 'lodash-es' 代替 import { throttle } from 'lodash'，lodash-es 将 Lodash 库导出为 ES 模块，支持基于 ES modules 的 tree shaking，实现按需引入。
+2. ant-design
+  ant-design 默认支持基于 ES modules 的 tree shaking，对于 js 部分，直接引入 import { Button } from 'antd' 就会有按需加载的效果。
+  假如项目中仅引入少部分组件，import { Button } from 'antd' 也属于有副作用，webpack不能把其他组件进行tree-shaking。这时可以缩小引用范围，将引入方式修改为 import { Button } from 'antd/lib/button' 来进一步优化。
+  链接：https://juejin.cn/post/6996816316875161637
 
 作用：摇掉没有引用的代码
