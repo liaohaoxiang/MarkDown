@@ -16,23 +16,23 @@ Object.getOwnPropertyDescriptor(dog, 'name')
 目前有四个操作会忽略`enumberable`为false的属性，即不可枚举
 
 - `for...in`循环：只遍历对象自身的和 **继承的** **可枚举**属性，不包含Symbol属性 
-- `Object.keys`：遍历对象自身的 **所有可枚举**的属性的key，返回一个数组
+- `Object.keys`：遍历对象自身的 **所有可枚举**的属性的key，不包含Symbol属性，返回一个数组
 - `JSON.stringify`：只序列化对象自身的 **可枚举**属性
 - `Object.assign`：忽略不可枚举属性，只拷贝对象自身的可枚举属性
 
 ### 对象操作
 
 - 遍历对象
-  - for…in
-    - 循环遍历对象自身的和 **继承的** 可枚举属性，不包含Symbol属性 
-  - Object.keys(obj)
+  - `for…in`
+    - 循环遍历对象自身的和 **继承的** 可枚举属性，不包含Symbol属性 （最大问题就是会遍历到 `__proto__` 上的属性）
+  - `Object.keys(obj)`
     - 返回一个数组，包含对象自身的 **可枚举属性**，不包含Symbol属性
-    - PS：如果参数不是一个对象而是原始值，ES5中会抛出TypeError，ES6中**强制转换**非对象参数为一个对象
-  - Object.getOwnPropertyNames(obj)
+    - PS：如果参数不是一个对象而是原始值，`ES5中会抛出TypeError，ES6中**强制转换**非对象参数为一个对象`
+  - `Object.getOwnPropertyNames(obj)`
     - 返回一个数组，包含对象自身的 **可枚举和不可枚举属性**，但不包含Symbol属性
-  - Object.getOwnPropertySymbol(obj)
+  - `Object.getOwnPropertySymbol(obj)`
     - 返回一个数组，包含对象自身的 **所有Symbol属性**的key
-  - Reflect.ownKeys(obj)
+  - `Reflect.ownKeys(obj)`
     - 返回一个数组，包含对象自身的key，不管key是Symbol还是字符串，也不管是否可枚举
 - 以上的遍历对象方法，遵循同样的次序规则
   - 首先遍历所有数值key，按照**数值**升序排列
