@@ -31,7 +31,55 @@ v-if 只会渲染符合条件的模板，如果频繁渲染会导致dom重复销
 
 ### v-model原理
 
-TBD
+- 修饰符
+
+  - `v-model.lazy` 由原来的`input`事件触发，改变为`change` 事件触发
+  - `v-model.trim` 去掉字符串首尾空格
+  - `v-model.number` 强制输入Number类型
+
+- 自定义v-model
+
+  - `v-model` 在内部为不同的输入元素使用不同的 property 并抛出不同的事件：
+
+    - text 和 textarea 元素使用 `value` property 和 `input` 事件；
+    - checkbox 和 radio 使用 `checked` property 和 `change` 事件；
+    - select 字段将 `value` 作为 prop 并将 `change` 作为事件。
+
+  - 在组件里
+
+    - ```vue
+      <template>
+        <div>
+          <input type="text" :value="value" v-on="inputEvent">
+        </div>
+      </template>
+      <script>
+      export default {
+        props: {
+          value: String,
+        },
+        data(){
+          return {
+            inputEvent: {
+              input: (e) => this.$emit('input', e.target.value)
+            }
+          }
+        }
+      }
+      </script>
+      ```
+
+  - 使用（消费）该组件
+
+    - ```vue
+      <Vmodel v-model="parentMsg" /> // typeof parentMsg == 'string'
+      ```
+
+  - 可以看出`v-model`是把 `parentMsg` 当作一个 `props` 传入到组件中，组件里通过 `value` 去接收该 `props` （input框默认是value，checkbox和radio默认的props是`checked`）
+
+  - 组件接收到value后，绑定到input框，相当于`:value="parentMsg"` 。`v-on` 可以传入一个对象，该对象是以事件名称为`key` ，`handler` 为 `value` 。这里input框的输入事件是input事件，然后`v-model` 同时会传入一个 `@input` 事件到组件中，必须要用`$emit` 去触发该事件，并把target.value 赋值到第一个参数
+
+  - 总结：v-model 传入一个名为value的props，和一个input事件。value用于绑定事件的值，input事件用于监听输入变化从而把变更值回调到value，达到双向绑定。
 
 
 
@@ -260,6 +308,8 @@ export function proxy (target: Object, sourceKey: string, key: string) {
 
 
 ### 事件处理
+
+> Vue事件是挂载到e.currentTarget上的
 
 - 监听事件
   - 通过 ```v-on``` 指令监听 DOM 事件
