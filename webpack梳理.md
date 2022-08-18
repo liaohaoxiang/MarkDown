@@ -216,10 +216,10 @@
             exclude: /node_modules/,
                 use: {
                   loader: 'babel-loader',
-                    options: {
-                      presets: ['@babel/preset-env'],
-                        cacheDirectory: true // 开启后，之后的构建会尝试读取缓存
-                    }
+                  options: {
+                    presets: ['@babel/preset-env'],
+                      cacheDirectory: true // 开启后，之后的构建会尝试读取缓存
+                  }
                 },
           },
          ```
@@ -266,6 +266,8 @@
 
 ### Tree-shaking
 
+作用：摇掉没有引用的代码
+
 开启需要
 
 1. 使用`ES6规范`的import/export, 引用的第三方库也需要是 es 模块
@@ -275,10 +277,9 @@
 
 1. lodash
 类似 import { throttle } from 'lodash' 就属于有副作用的引用，会将整个 lodash 文件进行打包。
-优化方式是使用 import { throttle } from 'lodash-es' 代替 import { throttle } from 'lodash'，lodash-es 将 Lodash 库导出为 ES 模块，支持基于 ES modules 的 tree shaking，实现按需引入。
+优化方式是使用` import { throttle } from 'lodash-es' `代替` import { throttle } from 'lodash'`，lodash-es 将 Lodash 库导出为 ES 模块，支持基于 ES modules 的 tree shaking，实现按需引入。
 2. ant-design
   ant-design 默认支持基于 ES modules 的 tree shaking，对于 js 部分，直接引入 import { Button } from 'antd' 就会有按需加载的效果。
   假如项目中仅引入少部分组件，import { Button } from 'antd' 也属于有副作用，webpack不能把其他组件进行tree-shaking。这时可以缩小引用范围，将引入方式修改为 import { Button } from 'antd/lib/button' 来进一步优化。
   链接：https://juejin.cn/post/6996816316875161637
 
-作用：摇掉没有引用的代码
